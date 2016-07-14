@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ac.incheon.custom.dao.TestRepository">
+
+	<resultMap id="testModel" type="ac.incheon.custom.model.TestModel">
+        <result property="id" column="id"/>
+        <result property="name" column="write_id"/>
+        <result property="regiDatetime" column="regi_datetime"/>
+    </resultMap>
+    
+
+    <select id="getSelectQuery"  resultMap="testModel">
+       SELECT 
+       id , name , regi_datetime 
+       FROM test.test_table
+    </select>
+    
+    <select id="getSelectQueryByName"  parameterType="HashMap" resultMap="testModel">
+       SELECT 
+       id , name , regi_datetime 
+       FROM test.test_table
+       where  name = #{name}
+    </select>
+    
+    <insert id="insertQuery"  parameterType="ac.incheon.custom.model.TestModel" >
+	    INSERT INTO test.test_table( id, name, regi_datetime )
+	    values( #{id} , #{name} , now() );
+    </insert>
+    
+    <update id="updateQuery"  parameterType="ac.incheon.custom.model.TestModel" >
+	    UPDATE test.test_table SET
+	    name = #{name},
+	    regi_datetime = now()
+	    where id = #{id}
+    </update>
+
+    <delete id="deleteQuery"  parameterType="ac.incheon.custom.model.TestModel" >
+	    DELETE FROM test.test_table 
+	    where id = #{id}
+    </delete>
+
+</mapper>

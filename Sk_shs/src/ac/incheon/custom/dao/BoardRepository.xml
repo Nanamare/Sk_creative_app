@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ac.incheon.custom.dao.BoardRepository">
+
+	<resultMap id="boardModel" type="ac.incheon.custom.model.BoardModel">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="content" column="content"/>
+        <result property="boardName" column="board_name"/>
+        <result property="attachUrl" column="attach_url"/>
+        <result property="regiDatetime" column="regi_datetime"/>
+        <result property="updateDatetime" column="update_datetime"/>
+        <result property="regiUserId" column="regi_user_id"/>
+        <result property="updateUserId" column="update_user_id"/>
+        <result property="password" column="password"/>
+        <result property="user_id" column="user_id"/>
+    </resultMap>
+    
+    <select id="getBoardInfo"  resultMap="boardModel">
+       SELECT 
+       id , name , content , board_name , attach_url , regi_datetime , update_datetime,
+       regi_user_id, update_user_id
+       FROM test.test_board
+       where 
+       id = #{id}
+    </select>    
+
+    <select id="getBoardList"  resultMap="boardModel">
+       SELECT 
+       id , name , content , board_name , attach_url , regi_datetime , update_datetime,
+       regi_user_id, update_user_id
+       FROM test.test_board
+       where 
+       board_name = #{boardName}
+    </select>
+    
+    
+    <insert id="insertBoard"  parameterType="ac.incheon.custom.model.BoardModel" >
+	    INSERT INTO test.test_board
+	    ( id, name, content, board_name, attach_url , regi_datetime , update_datetime , regi_user_id  )
+	    values( #{id} , #{name} , #{content} , #{boardName} , #{attachUrl} ,  now(), now() , #{regiUserId}  );
+    </insert>
+    
+    <delete id="deleteBoard"  parameterType="HashMap" >
+	    DELETE FROM test.test_board 
+	    where id = #{id}
+    </delete>
+    
+     <insert id="joinBoard"  parameterType="ac.incheon.custom.model.JoinModel" >
+	    INSERT INTO test.test_user
+	    ( user_id, password, board_name,user_name,regi_datetime )
+	    values( #{user_id} , #{password}, #{board_name},#{user_name}, now() );
+    </insert>
+    
+    
+   	<select id="getPasswd"  resultMap="boardModel">
+       SELECT 
+       password , board_name
+       FROM test.test_user
+       where user_id = #{user_id}
+    </select>    
+	
+	
+	
+    <update id="updateBoard"  parameterType="ac.incheon.custom.model.BoardModel" >
+	    UPDATE test.test_board SET
+	    name = #{name},
+	    content = #{content},
+	    board_name = #{boardName}, 
+	    update_datetime = now(),
+	    update_user_id = #{regiUserId}	    
+		where id = #{id}
+    </update>
+    
+    
+       <select id="getSearchList"  resultMap="boardModel">
+       SELECT 
+       id , name , content , board_name , attach_url , regi_datetime , update_datetime,
+       regi_user_id, update_user_id
+       FROM test.test_board
+       where 
+       name = #{name}
+    	</select>
+    
+    
+
+</mapper>
